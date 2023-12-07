@@ -1,5 +1,4 @@
 import pygame
-import random
 import time
 from player import Player
 from bee import Bee
@@ -36,7 +35,7 @@ class Game:
         self.font = pygame.font.Font(None, 36)  
 
         for _ in range(5):  # Add 5 bees to start
-            bee = Bee(random.randint(0, SCREEN_WIDTH - BEE_WIDTH), random.randint(0, SCREEN_HEIGHT - BEE_HEIGHT))
+            bee = Bee()
             self.all_sprites.add(bee)
             self.bees.add(bee)
 
@@ -74,7 +73,7 @@ class Game:
 
             if self.player.health <= 0:
                 game_over = self.font.render(f"GAME OVER", True, (0, 0, 0))
-                self.screen.blit(game_over, (50, 50))g
+                self.screen.blit(game_over, (50, 50))
                 time.sleep(5)
                 break
 

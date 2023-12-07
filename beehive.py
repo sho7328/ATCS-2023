@@ -20,3 +20,9 @@ class Beehive(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, SCREEN_WIDTH - BEEHIVE_WIDTH)
         self.rect.y = SCREEN_HEIGHT / 2
+
+    def get_hive_x(self):
+        return self.rect.x
+    
+    def get_hive_y(self):
+        return self.rect.y
