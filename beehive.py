@@ -1,5 +1,5 @@
 import pygame
-import random
+
 
 # Define screen dimensions
 SCREEN_WIDTH = 500
@@ -8,6 +8,8 @@ SCREEN_HEIGHT = 850
 # Define beehive dimensions
 BEEHIVE_WIDTH = 60
 BEEHIVE_HEIGHT = 60
+
+BEEHIVE_X = 10
 
 class Beehive(pygame.sprite.Sprite):
     def __init__(self):
@@ -18,7 +20,7 @@ class Beehive(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (BEEHIVE_WIDTH, BEEHIVE_HEIGHT))
 
         self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, SCREEN_WIDTH - BEEHIVE_WIDTH)
+        self.rect.x = BEEHIVE_X
         self.rect.y = SCREEN_HEIGHT / 2
 
     def get_hive_x(self):

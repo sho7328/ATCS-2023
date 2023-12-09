@@ -10,8 +10,10 @@ SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 850
 
 # Define player dimensions
-PLAYER_WIDTH = 50
-PLAYER_HEIGHT = 50
+PLAYER_WIDTH = 100
+PLAYER_HEIGHT = 100
+
+PLAYER_SPEED = 5
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -23,7 +25,21 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.health = 100
-        self.speed = 5
+        self.speed = PLAYER_SPEED
+        self.rect.x = 0
+        self.rect.y = 0
+
+    def get_player_speed(self):
+        return self.speed
+    
+    def get_player_x(self):
+        return self.rect.x
+    
+    def get_player_y(self):
+        return self.rect.y
+    
+    def get_player_health(self):
+        return self.health
 
     def change_image_direction(self, direction):
         self.image = pygame.image.load("player_" + direction + ".png")

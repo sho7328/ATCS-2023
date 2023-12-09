@@ -2,6 +2,7 @@ import pygame
 import time
 from player import Player
 from bee import Bee
+from river import River
 from beehive import Beehive
 
 # Define some colors
@@ -29,12 +30,15 @@ class Game:
         self.bees = pygame.sprite.Group()
         self.beehives = pygame.sprite.Group()
 
+        self.river = River()
+        self.all_sprites.add(self.river)  
+
         self.player = Player()
         self.all_sprites.add(self.player)
 
         self.font = pygame.font.Font(None, 36)  
 
-        for _ in range(5):  # Add 5 bees to start
+        for _ in range(5):
             bee = Bee()
             self.all_sprites.add(bee)
             self.bees.add(bee)
@@ -43,7 +47,31 @@ class Game:
         self.all_sprites.add(beehive)
         self.beehives.add(beehive)
 
+        self.game_over = False
+
         self.clock = pygame.time.Clock()
+
+
+    def get_game_over(self):
+        return self.game_over
+
+    def check_river_collision(self):
+        # Check for collision between player and river
+        if pygame.sprite.collide_rect(self.player, self.river):
+            # Player touched the river, decrease health
+            self.player.health -= 1
+    
+    def check_bee_collision(self):
+        # Check for collisions
+        hits = pygame.sprite.spritecollide(self.player, self.bees, False)
+        if hits:
+            self.player.health -= 1
+    
+    def check_beehive_collision(self):
+        hits = pygame.sprite.spritecollide(self.player, self.beehives, True)
+        if hits:
+            self.player.speed *= 2  # Double player speed
+
 
     def run(self):
         running = True
@@ -54,14 +82,9 @@ class Game:
 
             self.all_sprites.update()
 
-            # Check for collisions
-            hits = pygame.sprite.spritecollide(self.player, self.bees, False)
-            if hits:
-                self.player.health -= 1
-
-            hits = pygame.sprite.spritecollide(self.player, self.beehives, True)
-            if hits:
-                self.player.speed *= 2  # Double player speed
+            self.check_river_collision()
+            self.check_bee_collision()
+            self.check_beehive_collision()
 
             # Draw everything
             self.screen.fill(WHITE)
@@ -75,7 +98,7 @@ class Game:
                 game_over = self.font.render(f"GAME OVER", True, (0, 0, 0))
                 self.screen.blit(game_over, (50, 50))
                 time.sleep(5)
-                break
+                running = False
 
             pygame.display.flip()
             self.clock.tick(30)
