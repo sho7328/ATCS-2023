@@ -73,7 +73,7 @@ class Bee(pygame.sprite.Sprite):
     def update(self, input=None):
         if input == True:
             self.wait_timer += 1
-            if self.wait_timer >= 5:
+            if self.wait_timer >= 10:
                 self.chase_player()
 
     def draw(self, screen):
