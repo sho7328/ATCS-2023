@@ -2,7 +2,9 @@ import pygame
 import time
 from player import Player
 from bee import Bee
-from river import River
+from river import River1
+from river import River2
+from river import River3
 from beehive import Beehive
 
 # Define some colors
@@ -30,8 +32,15 @@ class Game:
         self.bees = pygame.sprite.Group()
         self.beehives = pygame.sprite.Group()
 
-        self.river = River()
-        self.all_sprites.add(self.river)  
+        self.river1 = River1()
+        self.all_sprites.add(self.river1)  
+
+        self.river2 = River2()
+        self.all_sprites.add(self.river2)
+
+        self.river3 = River3()
+        self.all_sprites.add(self.river3)
+
 
         self.player = Player()
         self.all_sprites.add(self.player)
@@ -57,7 +66,7 @@ class Game:
 
     def check_river_collision(self):
         # Check for collision between player and river
-        if pygame.sprite.collide_rect(self.player, self.river):
+        if pygame.sprite.collide_rect(self.player, self.river1) or pygame.sprite.collide_rect(self.player, self.river2) or pygame.sprite.collide_rect(self.player, self.river3):
             # Player touched the river, decrease health
             self.player.health -= 1
     
@@ -71,6 +80,7 @@ class Game:
         hits = pygame.sprite.spritecollide(self.player, self.beehives, True)
         if hits:
             self.player.speed *= 2  # Double player speed
+        
 
 
     def run(self):

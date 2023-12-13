@@ -13,6 +13,8 @@ SCREEN_HEIGHT = 850
 PLAYER_WIDTH = 100
 PLAYER_HEIGHT = 100
 
+PLAYER_START_HEALTH = 50
+
 PLAYER_SPEED = 5
 
 class Player(pygame.sprite.Sprite):
@@ -24,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
 
         self.rect = self.image.get_rect()
-        self.health = 100
+        self.health = PLAYER_START_HEALTH
         self.speed = PLAYER_SPEED
         self.rect.x = 0
         self.rect.y = 0

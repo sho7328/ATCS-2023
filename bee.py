@@ -37,6 +37,7 @@ class Bee(pygame.sprite.Sprite):
         # initial state is south
         self.fsm = FSM("calm")
         self.init_fsm()
+        
 
     def get_state(self):
         return self.fsm.current_state
@@ -71,5 +72,4 @@ class Bee(pygame.sprite.Sprite):
         # elif self.state == "angry":
         #     # Implement chasing behavior
         self.chase_player()
-
 
