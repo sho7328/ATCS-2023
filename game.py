@@ -79,6 +79,7 @@ class Game:
     
     def check_beehive_collision(self):
         if pygame.sprite.collide_rect(self.player, self.beehive):
+            
             self.beehive_collide = True
             if self.first_collide == True:
                 self.player.speed *= 2  # Double player speed

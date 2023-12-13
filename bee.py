@@ -26,7 +26,7 @@ class Bee(pygame.sprite.Sprite):
         self.game = game
 
         self.rect = self.image.get_rect()
-        self.og_x = self.beehive.rect.x + random.randrange(-1 * BEE_WIDTH, BEE_WIDTH)
+        self.og_x = self.beehive.rect.x + random.randrange(-1 * BEE_WIDTH, BEE_WIDTH + 20)
         self.og_y = self.beehive.rect.y + random.randrange(-1 * BEE_HEIGHT, BEE_HEIGHT)
         self.rect.x = self.og_x
         self.rect.y = self.og_y
@@ -59,7 +59,7 @@ class Bee(pygame.sprite.Sprite):
 
     
     def chase_player(self):
-        self.speed = self.game.player.speed
+        self.speed = self.game.player.speed - 2
         if self.game.player.rect.x > self.rect.x:
              self.rect.x += self.speed
         elif self.game.player.rect.x < self.rect.x:
@@ -73,7 +73,8 @@ class Bee(pygame.sprite.Sprite):
     def update(self, input=None):
         if input == True:
             self.wait_timer += 1
-            if self.wait_timer >= 10:
+            if self.wait_timer >= 30:
+                self.fsm = FSM("chasing")
                 self.chase_player()
 
     def draw(self, screen):
