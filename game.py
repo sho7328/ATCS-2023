@@ -1,5 +1,4 @@
 import pygame
-import time
 from player import Player
 from bee import Bee
 from river import River1
@@ -28,8 +27,13 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("River Trek")
 
+        # Load background image
+        self.background = pygame.image.load("background_image.jpg")  # Replace with your image file
+        self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
         self.all_sprites = pygame.sprite.Group()
         self.bees = pygame.sprite.Group()
+        
         self.beehives = pygame.sprite.Group()
 
         self.river1 = River1()
@@ -57,6 +61,7 @@ class Game:
         self.beehives.add(beehive)
 
         self.game_over = False
+        self.game_over_timer = 0  # Add a timer variable
 
         self.clock = pygame.time.Clock()
 
@@ -96,8 +101,10 @@ class Game:
             self.check_bee_collision()
             self.check_beehive_collision()
 
+            # Draw background
+            self.screen.blit(self.background, (0, 0))
+
             # Draw everything
-            self.screen.fill(WHITE)
             self.all_sprites.draw(self.screen)
 
             # Display player health
@@ -106,10 +113,12 @@ class Game:
 
             if self.player.health <= 0:
                 game_over = self.font.render(f"GAME OVER", True, (0, 0, 0))
-                self.screen.blit(game_over, (50, 50))
-                time.sleep(5)
-                running = False
+                self.screen.blit(game_over, ((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT/2))
+                self.game_over_timer += 1
 
+                if self.game_over_timer >= 50:
+                    running = False
+            
             pygame.display.flip()
             self.clock.tick(30)
 
