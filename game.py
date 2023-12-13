@@ -1,9 +1,7 @@
 import pygame
 from player import Player
 from bee import Bee
-from river import River1
-from river import River2
-from river import River3
+from river import River
 from beehive import Beehive
 from house import House
 
@@ -30,39 +28,33 @@ class Game:
         self.background = pygame.image.load("background_image.jpg")  # Replace with your image file
         self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        self.all_sprites = pygame.sprite.Group()
         self.bees = pygame.sprite.Group()
         
         self.beehives = pygame.sprite.Group()
 
-        self.river1 = River1()
-        self.all_sprites.add(self.river1)  
+        self.river1 = River(200, SCREEN_HEIGHT - 130, SCREEN_WIDTH - 200, 0)
 
-        self.river2 = River2()
-        self.all_sprites.add(self.river2)
+        self.river2 = River(400, 200, SCREEN_WIDTH - 400, 200)
 
-        self.river3 = River3()
-        self.all_sprites.add(self.river3)
+        self.river3 = River(200, 300, 0, SCREEN_HEIGHT - 300)
 
         self.house = House()
-        self.all_sprites.add(self.house)
         
         self.player = Player()
-        self.all_sprites.add(self.player)
 
-        self.font = pygame.font.Font(None, 36)  
+        self.beehive = Beehive()
 
-        for _ in range(5):
-            bee = Bee()
-            self.all_sprites.add(bee)
+        self.beehive_collide = False
+        self.first_collide = True
+
+        for i in range(5):
+            bee = Bee(self)
             self.bees.add(bee)
 
-        beehive = Beehive()
-        self.all_sprites.add(beehive)
-        self.beehives.add(beehive)
+        self.font = pygame.font.Font(None, 36)
 
-        self.game_over = False
-        self.game_over_timer = 0  # Add a timer variable
+        # Add a timer variable
+        self.game_over_timer = 0  
 
         self.player_win = False
 
@@ -80,21 +72,21 @@ class Game:
     
     def check_bee_collision(self):
         # Check for collisions
-        hits = pygame.sprite.spritecollide(self.player, self.bees, False)
-        if hits:
-            self.player.health -= 1
+        if pygame.sprite.spritecollide(self.player, self.bees, False):
+            for bee in self.bees:
+                if bee.get_state() == "chasing":
+                    self.player.health -= 1
     
     def check_beehive_collision(self):
-        hits = pygame.sprite.spritecollide(self.player, self.beehives, True)
-        if hits:
-            self.player.speed *= 2  # Double player speed
+        if pygame.sprite.collide_rect(self.player, self.beehive):
+            self.beehive_collide = True
+            if self.first_collide == True:
+                self.player.speed *= 2  # Double player speed
+                self.first_collide = False
 
     def check_house_collision(self):
-        hits = pygame.sprite.spritecollide(self.player, self.house, True)
-        if hits:
+        if pygame.sprite.collide_rect(self.player, self.house):
             self.player_win = True
-        
-
 
     def run(self):
         running = True
@@ -103,18 +95,32 @@ class Game:
                 if event.type == pygame.QUIT:
                     running = False
 
-            self.all_sprites.update()
-
             self.check_river_collision()
             self.check_bee_collision()
             self.check_beehive_collision()
             self.check_house_collision()
 
+            for bee in self.bees:
+                bee.update(self.beehive_collide)
+            self.beehive.update()
+            self.river1.update()
+            self.river2.update()
+            self.river3.update()
+            self.house.update()
+            self.player.update()
+
             # Draw background
             self.screen.blit(self.background, (0, 0))
 
             # Draw everything
-            self.all_sprites.draw(self.screen)
+            for bee in self.bees:
+                self.bees.draw(self.screen)
+            self.beehive.draw(self.screen)
+            self.river1.draw(self.screen)
+            self.river2.draw(self.screen)
+            self.river3.draw(self.screen)
+            self.house.draw(self.screen)
+            self.player.draw(self.screen)
 
             # Display player health
             if self.player.health < 30:
@@ -140,13 +146,12 @@ class Game:
                 self.screen.blit(game_over, ((SCREEN_WIDTH/6), SCREEN_HEIGHT/2))
                 self.game_over_timer += 1
 
-                if self.game_over_timer >= 50:
+                if self.game_over_timer >= 5:
                     running = False
             
             pygame.display.flip()
             self.clock.tick(30)
 
-        
         pygame.quit()
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import pygame
 
-HOUSE_WIDTH = 100
-HOUSE_HEIGHT = 100
+HOUSE_WIDTH = 130
+HOUSE_HEIGHT = 130
 
 # Define screen dimensions
 SCREEN_WIDTH = 500
@@ -21,4 +21,7 @@ class House(pygame.sprite.Sprite):
 
     def update(self):
         pass
+
+    def draw(self, screen):
+        screen.blit(self.image, (self.rect.x , self.rect.y ))
 

@@ -23,8 +23,8 @@ class Beehive(pygame.sprite.Sprite):
         self.rect.x = BEEHIVE_X
         self.rect.y = SCREEN_HEIGHT / 2
 
-    def get_hive_x(self):
-        return self.rect.x
-    
-    def get_hive_y(self):
-        return self.rect.y
+    def update(self):
+        pass
+
+    def draw(self, screen):
+        screen.blit(self.image, (self.rect.x , self.rect.y ))

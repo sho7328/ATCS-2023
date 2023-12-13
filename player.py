@@ -31,18 +31,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = 0
         self.rect.y = 0
 
-    def get_player_speed(self):
-        return self.speed
-    
-    def get_player_x(self):
-        return self.rect.x
-    
-    def get_player_y(self):
-        return self.rect.y
-    
-    def get_player_health(self):
-        return self.health
-
     def change_image_direction(self, direction):
         self.image = pygame.image.load("player_" + direction + ".png")
         self.image = pygame.transform.scale(self.image, (PLAYER_WIDTH, PLAYER_HEIGHT))
@@ -59,3 +47,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.y -= self.speed
         if keys[pygame.K_DOWN] and self.rect.y < SCREEN_HEIGHT - PLAYER_HEIGHT:
             self.rect.y += self.speed
+
+    def draw(self, screen):
+        screen.blit(self.image, (self.rect.x , self.rect.y ))
