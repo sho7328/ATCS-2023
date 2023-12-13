@@ -55,6 +55,7 @@ class Game:
 
         # Add a timer variable
         self.game_over_timer = 0  
+        self.wait_timer = 0
 
         self.player_win = False
 
@@ -79,11 +80,12 @@ class Game:
     
     def check_beehive_collision(self):
         if pygame.sprite.collide_rect(self.player, self.beehive):
-            
+
             self.beehive_collide = True
             if self.first_collide == True:
                 self.player.speed *= 2  # Double player speed
                 self.first_collide = False
+                self.wait_timer = 0
 
     def check_house_collision(self):
         if pygame.sprite.collide_rect(self.player, self.house):
@@ -101,8 +103,20 @@ class Game:
             self.check_beehive_collision()
             self.check_house_collision()
 
+
+            input = None
+            if self.beehive_collide:
+                if self.wait_timer < 1:
+                    input = "touched_hive"
+                self.wait_timer += 1
+                if self.wait_timer > 30 and self.wait_timer < 100:
+                    input = "time_up"
+                    self.wait_timer = 1000
+            
             for bee in self.bees:
-                bee.update(self.beehive_collide)
+                bee.update(input)
+
+
             self.beehive.update()
             self.river1.update()
             self.river2.update()

@@ -46,8 +46,10 @@ class Bee(pygame.sprite.Sprite):
         return self.fsm.current_state
 
     def init_fsm(self):
-        self.fsm.add_transition("dead", "chasing", self.calm, "calm")
-        self.fsm.add_transition("touched_hive", "calm", self.chase_player, "chasing")
+        self.fsm.add_transition("touched_hive", "calm", None, "waiting")
+        self.fsm.add_transition(None, "waiting", None, "waiting")
+        self.fsm.add_transition("touched_hive", "waiting", None, "waiting")
+        self.fsm.add_transition("time_up", "waiting", self.chase_player, "chasing")
         self.fsm.add_transition(None, "chasing", self.chase_player, "chasing")
         self.fsm.add_transition(None, "calm", self.calm, "calm")
     
@@ -71,11 +73,7 @@ class Bee(pygame.sprite.Sprite):
 
 
     def update(self, input=None):
-        if input == True:
-            self.wait_timer += 1
-            if self.wait_timer >= 30:
-                self.fsm = FSM("chasing")
-                self.chase_player()
+        self.fsm.process(input)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x , self.rect.y))
