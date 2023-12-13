@@ -5,6 +5,7 @@ from river import River1
 from river import River2
 from river import River3
 from beehive import Beehive
+from house import House
 
 # Define some colors
 WHITE = (255, 255, 255)
@@ -18,8 +19,6 @@ SCREEN_HEIGHT = 850
 # Define bee dimensions
 BEE_WIDTH = 30
 BEE_HEIGHT = 30
-
-
 
 class Game:
     def __init__(self):
@@ -45,7 +44,9 @@ class Game:
         self.river3 = River3()
         self.all_sprites.add(self.river3)
 
-
+        self.house = House()
+        self.all_sprites.add(self.house)
+        
         self.player = Player()
         self.all_sprites.add(self.player)
 
@@ -62,6 +63,8 @@ class Game:
 
         self.game_over = False
         self.game_over_timer = 0  # Add a timer variable
+
+        self.player_win = False
 
         self.clock = pygame.time.Clock()
 
@@ -85,6 +88,11 @@ class Game:
         hits = pygame.sprite.spritecollide(self.player, self.beehives, True)
         if hits:
             self.player.speed *= 2  # Double player speed
+
+    def check_house_collision(self):
+        hits = pygame.sprite.spritecollide(self.player, self.house, True)
+        if hits:
+            self.player_win = True
         
 
 
@@ -100,6 +108,7 @@ class Game:
             self.check_river_collision()
             self.check_bee_collision()
             self.check_beehive_collision()
+            self.check_house_collision()
 
             # Draw background
             self.screen.blit(self.background, (0, 0))
@@ -115,6 +124,15 @@ class Game:
             self.font = pygame.font.Font(None, 36)
             health_text = self.font.render(f"Health: {self.player.health}", True, self.health_color)
             self.screen.blit(health_text, (325, 10))
+
+            if self.player_win == True:
+                self.font = pygame.font.Font(None, 80)
+                game_over = self.font.render(f"YOU WIN!", True, (0, 255, 0))
+                self.screen.blit(game_over, ((SCREEN_WIDTH/6), SCREEN_HEIGHT/2))
+                self.game_over_timer += 1
+
+                if self.game_over_timer >= 50:
+                    running = False
 
             if self.player.health <= 0:
                 self.font = pygame.font.Font(None, 80)
