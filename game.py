@@ -108,12 +108,18 @@ class Game:
             self.all_sprites.draw(self.screen)
 
             # Display player health
-            health_text = self.font.render(f"Health: {self.player.health}", True, (0, 0, 0))
-            self.screen.blit(health_text, (10, 10))
+            if self.player.health < 30:
+                self.health_color = (255, 0, 0)
+            else:
+                self.health_color = (0, 255, 0)
+            self.font = pygame.font.Font(None, 36)
+            health_text = self.font.render(f"Health: {self.player.health}", True, self.health_color)
+            self.screen.blit(health_text, (325, 10))
 
             if self.player.health <= 0:
-                game_over = self.font.render(f"GAME OVER", True, (0, 0, 0))
-                self.screen.blit(game_over, ((SCREEN_WIDTH/2) - 50, SCREEN_HEIGHT/2))
+                self.font = pygame.font.Font(None, 80)
+                game_over = self.font.render(f"GAME OVER", True, (255, 0, 0))
+                self.screen.blit(game_over, ((SCREEN_WIDTH/6), SCREEN_HEIGHT/2))
                 self.game_over_timer += 1
 
                 if self.game_over_timer >= 50:
