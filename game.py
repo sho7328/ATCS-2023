@@ -152,7 +152,7 @@ class Game:
                 self.screen.blit(game_over, ((SCREEN_WIDTH/6), SCREEN_HEIGHT/2))
                 self.game_over_timer += 1
 
-                if self.game_over_timer >= 50:
+                if self.game_over_timer >= 200:
                     running = False
 
             if self.player.health <= 0:
@@ -161,7 +161,7 @@ class Game:
                 self.screen.blit(game_over, ((SCREEN_WIDTH/6), SCREEN_HEIGHT/2))
                 self.game_over_timer += 1
 
-                if self.game_over_timer >= 5:
+                if self.game_over_timer >= 200:
                     running = False
             
             pygame.display.flip()

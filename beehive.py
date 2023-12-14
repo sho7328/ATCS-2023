@@ -1,6 +1,5 @@
 import pygame
 
-
 # Define screen dimensions
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 850
