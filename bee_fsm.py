@@ -1,9 +1,13 @@
+# 0% Chatgpt; I took this from the maze FSM lab that I coded.
+# The big paragraph documentation is from the lab, written by Ms. Namasivayam, and the hashtag documentation is by me.
+
 class FSM:
     def __init__(self, initial_state):
         # Dictionary (input_symbol, current_state) --> (action, next_state).
         self.state_transitions = {}
         self.current_state = initial_state
 
+    # Add the transitions entered to the state transitions dictionary
     def add_transition(self, input_symbol, state, action=None, next_state=None):
         """
         Adds a transition to the instance variable state_transitions
@@ -23,9 +27,10 @@ class FSM:
         """
         if next_state == None:
             next_state = state
-        # add to dictionary
+        # Add to dictionary
         self.state_transitions[(input_symbol, state)] = (action, next_state)
 
+    # Return the corresponding action and state to the input and state inputted
     def get_transition(self, input_symbol, state):
         """
         Returns tuple (action, next state) given an input_symbol and state.
@@ -39,9 +44,10 @@ class FSM:
         Returns:
             tuple: Returns the tuple (action, next_state)
         """
-        # return the corresponding action and state
+        # Return the corresponding action and state
         return self.state_transitions[(input_symbol, state)]
 
+    # Runs the corresponding action method based on the input symbol and transition to the next state.
     def process(self, input_symbol):
         """
         The main method that you call to process input. This may
@@ -53,10 +59,10 @@ class FSM:
         Args:
             input_symbol (anything): The input to process
         """
-        # next is the tuple for the next action and state
+        # Next is the tuple for the next action and state
         next = self.get_transition(input_symbol, self.current_state)
-        # if the action is not empty, run the action
+        # If the action is not empty, run the action
         if next[0] != None:
             next[0]()
-        # set the state to the new state
+        # Set the state to the new state
         self.current_state = next[1]

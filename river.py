@@ -1,32 +1,22 @@
-import pygame
+# The very base of this class was coded by chatgpt and which I expanded on to have 3 river classes for each different river shape,
+# and Ms. Namasivayam then told me how I could just have 1 class with different river shapes/dimensions, so I tweaked the code again to make it more efficient.
 
-# Define some colors
-WHITE = (255, 255, 255)
+import pygame 
+
+# Blue color
 BLUE = (0, 0, 255)
 
-# Define river dimensions
-RIVER_WIDTH1 = 200
-RIVER_HEIGHT1 = 850 - 130
-
-RIVER_WIDTH2 = 400
-RIVER_HEIGHT2 = 200
-
-RIVER_WIDTH3 = 200
-RIVER_HEIGHT3 = 300
-
-# Define screen dimensions
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 850
-
 class River(pygame.sprite.Sprite):
+    # Game passes in the rivers' dimensions and location
     def __init__(self, width, height, x, y):
         super().__init__()
 
+        # Set the river visuals, color, and location
         self.image = pygame.Surface([width, height])
         self.image.fill(BLUE)
         self.rect = self.image.get_rect()
-        self.rect.x = x #SCREEN_WIDTH - RIVER_WIDTH1
-        self.rect.y = y #0
+        self.rect.x = x 
+        self.rect.y = y
 
     def update(self):
         pass
